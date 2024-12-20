@@ -1,0 +1,232 @@
+
+ A new movie has been created with the following details: {"name":"Spirited Away","description":"A girl navigates a world of spirits to save her parents.","duration":125,"ratings":4.9,"totalRating":3500,"releaseYear":2001,"releaseDate":"2001-07-20T00:00:00.000Z","createdAt":"2024-12-03T08:00:00.220Z","genres":["Animation","Adventure","Fantasy"],"directors":["Hayao Miyazaki"],"coverImage":"spirited-away.jpg","actors":["Rumi Hiiragi","Miyu Irino","Mari Natsuki"],"price":50,"_id":"67419738d76211d0fdb403f7","createdBy":"MOHSIN","__v":0,"durationInHours":2.0833333333333335,"id":"67419738d76211d0fdb403f7"}
+
+ A new movie has been created with the following details: {"name":"Joker","description":"The origin story of the infamous Gotham villain.","duration":122,"ratings":4.8,"totalRating":2500,"releaseYear":2019,"releaseDate":"2019-10-04T00:00:00.000Z","createdAt":"2024-12-03T08:00:00.220Z","genres":["Crime","Drama"],"directors":["Todd Phillips"],"coverImage":"joker.jpg","actors":["Joaquin Phoenix","Robert De Niro","Zazie Beetz"],"price":60,"_id":"67419738d76211d0fdb403f6","createdBy":"MOHSIN","__v":0,"durationInHours":2.033333333333333,"id":"67419738d76211d0fdb403f6"}
+
+ Execution time for query: 36 milliseconds 
+
+ Execution time for query: 16 milliseconds 
+
+ Execution time for query: 27 milliseconds 
+
+ Execution time for query: 25 milliseconds 
+
+ Execution time for query: 22 milliseconds 
+
+ Execution time for query: 19 milliseconds 
+
+ Execution time for query: 24 milliseconds 
+
+ Execution time for query: 26 milliseconds 
+
+ Execution time for query: 8 milliseconds 
+
+ Execution time for query: 15 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 13 milliseconds 
+
+ Execution time for query: 21 milliseconds 
+
+ Execution time for query: 16 milliseconds 
+
+ Execution time for query: 17 milliseconds 
+
+ Execution time for query: 14 milliseconds 
+
+ Execution time for query: 21 milliseconds 
+
+ Execution time for query: 19 milliseconds 
+
+ Execution time for query: 9 milliseconds 
+
+ Execution time for query: 16 milliseconds 
+
+ Execution time for query: 15 milliseconds 
+
+ Execution time for query: 17 milliseconds 
+
+ Execution time for query: 14 milliseconds 
+
+ Execution time for query: 10 milliseconds 
+
+ Execution time for query: 17 milliseconds 
+
+ Execution time for query: 18 milliseconds 
+
+ Execution time for query: 13 milliseconds 
+
+ Execution time for query: 14 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 11 milliseconds 
+
+ Execution time for query: 17 milliseconds 
+
+ Execution time for query: 8 milliseconds 
+
+ Execution time for query: 6 milliseconds 
+
+ Execution time for query: 10 milliseconds 
+
+ Execution time for query: 32 milliseconds 
+
+ Execution time for query: 14 milliseconds 
+
+ Execution time for query: 9 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 13 milliseconds 
+
+ Execution time for query: 11 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 14 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 14 milliseconds 
+
+ Execution time for query: 10 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 11 milliseconds 
+
+ Execution time for query: 14 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 11 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 13 milliseconds 
+
+ Execution time for query: 13 milliseconds 
+
+ Execution time for query: 13 milliseconds 
+
+ Execution time for query: 11 milliseconds 
+
+ Execution time for query: 13 milliseconds 
+
+ Execution time for query: 15 milliseconds 
+
+ Execution time for query: 31 milliseconds 
+
+ Execution time for query: 14 milliseconds 
+
+ Execution time for query: 15 milliseconds 
+
+ Execution time for query: 33 milliseconds 
+
+ Execution time for query: 5 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 5 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 6 milliseconds 
+
+ Execution time for query: 8 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 5 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 4 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 3 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 2 milliseconds 
+
+ Execution time for query: 17 milliseconds 
+
+ Execution time for query: 27 milliseconds 
+
+ Execution time for query: 17 milliseconds 
+
+ Execution time for query: 5 milliseconds 
+
+ Execution time for query: 5 milliseconds 
+
+ Execution time for query: 7 milliseconds 

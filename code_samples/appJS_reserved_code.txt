@@ -1,0 +1,409 @@
+const express = require("express"); //returns a function that creates an Express application
+const app = express();
+const fs = require("fs");
+const { stringify } = require("querystring");
+let movies = JSON.parse(fs.readFileSync("./data/movies.json"));
+app.use(express.json()); //it is the MIDDLEWARE that parses incoming requests with
+
+// const movies = require("./data/movies.json");
+//ROUTE=HTTP-METHODS(get,post,put,delete)+URL(root)
+// app.get('/', (req, res)=>{
+//     res.status(200).send('Speaking from Express Server');
+// });
+
+//GET => '/api/v1/movies/'
+const getMovie=(req, res) => {
+    return res.status(200).json({
+      status: "success",
+      data: { movies },
+      message: "All movies fetched successfully",
+    });
+}
+// app.get("/api/v1/movies",getMovie);
+//GET => '/api/v1/movies/:id'
+const getMovieWithId=(req, res) => {
+    console.log(req.params);
+    // res.send(`you requested movie with id ${req.params.id}`);
+    const movie = movies.find((movie) => movie.id === parseInt(req.params.id));
+    if (!movie) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Movie not Found" });
+    } else {
+      return res
+        .status(200)
+        .json({
+          status: "success",
+          data: { movie },
+          message: "Movie Fetched successfully",
+        });
+    }
+    // const movie = movies.find((movie) => movie.id === parseInt(req.params.id));
+    // if (!movie) return res.status(404).json({ status: "error", message: "Movie not found" });
+    // res.status(200).json({
+    //     status: "success",
+    //     data: { movie },
+    //     message: "Movie fetched successfully",
+    // });
+}
+// app.get("/api/v1/movies/:id",getMovieWithId);
+//POST => '/api/v1/movies/'
+const createsNewMovie = (req, res) => {
+    // const newMovie = req.body;
+    // movies = [...movies, newMovie];
+    // fs.writeFileSync("./data/movies.json", JSON.stringify(movies));
+    // res.status(201).json({
+    //   status: "success",
+    //   data: {
+    //     movie: newMovie,
+    //   },
+    //   message: "Movie created successfully",
+    // });
+    const newId = movies[movies.length - 1].id + 1;
+    // const newMovie = {id:newId,...req.body};
+    const newMovie = Object.assign({ id: newId }, req.body);
+    // movies=[...movies, newMovie];//modern way to pust new object into previous array
+    movies.push(newMovie);
+    fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+      error
+        ? res.status(500).json({ status: "error", message: error.message })
+        : res.status(201).json({
+            status: "success",
+            data: { movie: newMovie },
+            message: "Movie created successfully",
+          });
+      // if(error) return res.status(500).json({status:"error",message:error.message});
+      // res.status(201).json({
+      //     status: "success",
+      //     data: {
+      //         movie: newMovie,
+      //     },
+      //     message: "Movie created successfully",
+      // });
+    });
+}
+// app.post("/api/v1/movies",createsNewMovie);
+//PATCH => '/api/v1/movies/:id'
+ const updateChunkMovie=(req, res) => {
+    const id = parseInt(req.params.id); //convert the string form of id to integer
+    let movieToUpdate = movies.find((movie) => movie.id === id); //get the existing movie with given id
+    const index = movies.indexOf(movieToUpdate);
+    if (!movieToUpdate) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "movie not found" });
+    } else {
+      const updatedMovie = Object.assign(movieToUpdate, req.body);
+      movies[index] = updatedMovie;
+      fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+        return error
+          ? res.status(500).json({ status: "error", message: error.message })
+          : res.status(200).json({
+              status: "success",
+              data: { movie: updatedMovie },
+              message: "Movie updated successfully",
+            });
+      });
+    }
+    // const movieIndex = movies.findIndex((movie) => movie.id === id);
+    // if (movieIndex === -1) return res.status(404).json({ status: "error", message: "Movie not found" });
+    // // const updatedMovie = {...movies[movieIndex],...req.body };//modern way to update object
+    // const updatedMovie=Object.assign({},movies[movieIndex],req.body);
+    // movies[movieIndex] = updatedMovie;
+  }
+// app.patch("/api/v1/movies/:id",updateChunkMovie);
+//PUT => '/api/v1/movies/:id'
+ const updateEntireMovie= (req, res) => {
+    let id = parseInt(req.params.id);
+    let movieToUpdate = movies.find((movie) => movie.id === id);
+    let index = movies.indexOf(movieToUpdate);
+    if (!movieToUpdate) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Movie not Found" });
+    } else {
+      const updatedMovie = Object.assign(movieToUpdate, req.body);
+      movies[index] = updatedMovie;
+      fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+        return error
+          ? res.status(500).json({ status: "error", message: error.message })
+          : res.status(200).json({
+              status: "success",
+              data: { movie: updatedMovie },
+              message: "Movie updated successfully",
+            });
+      });
+    }
+  }
+// app.put("/api/v1/movies/:id",updateEntireMovie);
+//DELETE => '/api/v1/movies/:id'
+const deleteMovie=(req, res) => {
+    const id = parseInt(req.params.id);
+    const movieToDelete = movies.find((movie) => movie.id === id);
+    const index = movies.indexOf(movieToDelete);
+    if (!movieToDelete) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "movie not found" });
+    } else {
+      movies.splice(index, 1);
+      fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+        return error
+          ? res.status(500).json({ status: "error", message: error.message })
+          : res
+              .status(200)
+              .json({ status: "success", message: "Movie deleted successfully" });
+      });
+    }
+}
+// app.delete("/api/v1/movies/:id",deleteMovie);
+//using different approach
+
+// we are categorizing our routes based on HTTP methods which is '/api/v1/movies'
+app.route("/api/v1/movies")
+        .get(getMovie)
+        .post(createsNewMovie);
+
+// we are categorizing our routes based on HTTP methods which is '/api/v1/movies'
+app.route("/api/v1/movies/:id")
+        .get(getMovieWithId)
+        .patch(updateChunkMovie)
+        .put(updateEntireMovie)
+        .delete(deleteMovie);
+
+//CREATE A SERVER
+const port = 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+--------------------WITH FILE SYSTEM--------------------------
+//PARAMS-MIDDLEWARE to check if the movie exists in the database or not
+exports.checkId=(req,res,next,value)=>{
+    const movie = movies.find((movie) => movie.id === parseInt(value));
+    if (!movie) 
+    {
+      return res
+       .status(404)
+       .json({ status: "error", message: "Movie not found" });
+    }
+    else
+    {
+        next();
+    }
+};
+const express = require("express"); //returns a function that creates an Express application
+const app = express();
+const fs = require("fs");
+const { stringify } = require("querystring");
+let movies = JSON.parse(fs.readFileSync("./data/movies.json"));
+const Movie = require("./../Models/movieModel");
+
+//MIDDLE-WARE to validate the data sent in the POST-request
+exports.validateBody=(req, res, next) => {
+    const { name, releaseYear, duration } = req.body;
+    if (!name ||!releaseYear ||!duration)
+    {
+      return res
+       .status(400)
+       .json({ status: "error", message: "Missing required fields: title, director, release_year" });
+    }
+    next();
+};
+//GET => '/api/v1/movies/'
+exports.getMovie=(req, res) => {
+    return res.status(200).json({
+      status: "success",
+      data: { movies },
+      message: "All movies fetched successfully",
+    });
+};
+// app.get("/api/v1/movies",getMovie);
+//GET => '/api/v1/movies/:id'
+exports.getMovieWithId=(req, res) => {
+    console.log(req.params);
+    // res.send(`you requested movie with id ${req.params.id}`);
+    const movie = movies.find((movie) => movie.id === parseInt(req.params.id));
+    return res
+    .status(200)
+    .json({
+      status: "success",
+      data: { movie },
+      message: "Movie Fetched successfully",
+    });
+    // if (!movie) {
+    //   return res
+    //     .status(404)
+    //     .json({ status: "error", message: "Movie not Found" });
+    // } else {
+    //   return res
+    //     .status(200)
+    //     .json({
+    //       status: "success",
+    //       data: { movie },
+    //       message: "Movie Fetched successfully",
+    //     });
+    // }
+    // const movie = movies.find((movie) => movie.id === parseInt(req.params.id));
+    // if (!movie) return res.status(404).json({ status: "error", message: "Movie not found" });
+    // res.status(200).json({
+    //     status: "success",
+    //     data: { movie },
+    //     message: "Movie fetched successfully",
+    // });
+};
+// app.get("/api/v1/movies/:id",getMovieWithId);
+//POST => '/api/v1/movies/'
+exports.createsNewMovie = (req, res) => {
+    // const newMovie = req.body;
+    // movies = [...movies, newMovie];
+    // fs.writeFileSync("./data/movies.json", JSON.stringify(movies));
+    // res.status(201).json({
+    //   status: "success",
+    //   data: {
+    //     movie: newMovie,
+    //   },
+    //   message: "Movie created successfully",
+    // });
+    const newId = movies[movies.length - 1].id + 1;
+    // const newMovie = {id:newId,...req.body};
+    const newMovie = Object.assign({ id: newId }, req.body);
+    // movies=[...movies, newMovie];//modern way to pust new object into previous array
+    console.log(req.body);//new debugger
+    movies.push(newMovie);
+    fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+      error
+        ? res.status(500).json({ status: "error", message: error.message })
+        : res.status(201).json({
+            status: "success",
+            data: { movie: newMovie },
+            message: "Movie created successfully",
+          });
+    });
+};
+// app.post("/api/v1/movies",createsNewMovie);
+//PATCH => '/api/v1/movies/:id'
+exports.updateChunkMovie=(req, res) => {
+    const id = parseInt(req.params.id); //convert the string form of id to integer
+    let movieToUpdate = movies.find((movie) => movie.id === id); //get the existing movie with given id
+    const index = movies.indexOf(movieToUpdate);
+    const updatedMovie = Object.assign(movieToUpdate, req.body);
+      movies[index] = updatedMovie;
+      fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+        return error
+          ? res.status(500).json({ status: "error", message: error.message })
+          : res.status(200).json({
+              status: "success",
+              data: { movie: updatedMovie },
+              message: "Movie updated successfully",
+            });
+      });
+    // if (!movieToUpdate) {
+    //   return res
+    //     .status(404)
+    //     .json({ status: "error", message: "movie not found" });
+    // } else {
+    //   const updatedMovie = Object.assign(movieToUpdate, req.body);
+    //   movies[index] = updatedMovie;
+    //   fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+    //     return error
+    //       ? res.status(500).json({ status: "error", message: error.message })
+    //       : res.status(200).json({
+    //           status: "success",
+    //           data: { movie: updatedMovie },
+    //           message: "Movie updated successfully",
+    //         });
+    //   });
+    // }
+    // const movieIndex = movies.findIndex((movie) => movie.id === id);
+    // if (movieIndex === -1) return res.status(404).json({ status: "error", message: "Movie not found" });
+    // // const updatedMovie = {...movies[movieIndex],...req.body };//modern way to update object
+    // const updatedMovie=Object.assign({},movies[movieIndex],req.body);
+    // movies[movieIndex] = updatedMovie;
+};
+// app.patch("/api/v1/movies/:id",updateChunkMovie);
+//PUT => '/api/v1/movies/:id'
+exports.updateEntireMovie= (req, res) => {
+    let id = parseInt(req.params.id);
+    let movieToUpdate = movies.find((movie) => movie.id === id);
+    let index = movies.indexOf(movieToUpdate);
+    const updatedMovie = Object.assign(movieToUpdate, req.body);
+    movies[index] = updatedMovie;
+    fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+      return error
+        ? res.status(500).json({ status: "error", message: error.message })
+        : res.status(200).json({
+            status: "success",
+            data: { movie: updatedMovie },
+            message: "Movie updated successfully",
+          });
+    });
+    // if (!movieToUpdate) {
+    //   return res
+    //     .status(404)
+    //     .json({ status: "error", message: "Movie not Found" });
+    // } else {
+    //   const updatedMovie = Object.assign(movieToUpdate, req.body);
+    //   movies[index] = updatedMovie;
+    //   fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+    //     return error
+    //       ? res.status(500).json({ status: "error", message: error.message })
+    //       : res.status(200).json({
+    //           status: "success",
+    //           data: { movie: updatedMovie },
+    //           message: "Movie updated successfully",
+    //         });
+    //   });
+    // }
+};
+// app.put("/api/v1/movies/:id",updateEntireMovie);
+//DELETE => '/api/v1/movies/:id'
+exports.deleteMovie=(req, res) => {
+    const id = parseInt(req.params.id);
+    const movieToDelete = movies.find((movie) => movie.id === id);
+    const index = movies.indexOf(movieToDelete);
+    movies.splice(index, 1);
+    fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+      return error
+        ? res.status(500).json({ status: "error", message: error.message })
+        : res
+            .status(200)
+            .json({ status: "success", message: "Movie deleted successfully" });
+    });
+    // if (!movieToDelete) {
+    //   return res
+    //     .status(404)
+    //     .json({ status: "error", message: "movie not found" });
+    // } else {
+    //   movies.splice(index, 1);
+    //   fs.writeFile("./data/movies.json", JSON.stringify(movies), (error) => {
+    //     return error
+    //       ? res.status(500).json({ status: "error", message: error.message })
+    //       : res
+    //           .status(200)
+    //           .json({ status: "success", message: "Movie deleted successfully" });
+    //   });
+    // }
+};
+        // console.log(req.query);
+    // const excludeFields = ['sort', 'fields', 'page', 'limit'];
+    // const queryObj = {...req.query };
+    // excludeFields.forEach(field => delete queryObj[field]);
+    // console.log(queryObj);
+    // let queryStr=JSON.stringify(req.query);
+    // //GETTING THE OPERATIONAL PARAMENTERS
+    // queryStr=queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match)=> `$${match}`);
+    // LOGIC FOR CONVERTING THE DATA TO A VALID MONGOOSE QUERY(JSON.parse)
+    // const queryObj=JSON.parse(queryStr);
+    // //LOGIC FOR GETTING THE DATA FROM THE DATABASE
+    // let query = Movie.find(queryObj);
+    //SORTING LOGIC
+    // if (req.query.sort)
+    // {
+    //   // const sortBy = req.query.sort.split(",").map(sortParam => sortParam.split(":"));
+    //   const sortBy = req.query.sort.split(",").join(' ');
+    //   query=query.sort(sortBy);
+    // }
+    // else
+    // {
+    //   query=query.sort('-createdAt');
+    // }
