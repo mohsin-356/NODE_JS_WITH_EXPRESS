@@ -76,9 +76,9 @@ exports.login=asyncErrorHandler(async(req,res,next)=>{
         return next(error);
     }
 });
-
+yy
 exports.protect=asyncErrorHandler(async(req,res,next)=>{
-    //1.read the token & check if it exists
+    //1.read the token & check  1if it exists
     const testToken=req.headers.authorization;
     let token;
     if (testToken && testToken.startsWith('Bearer'))
