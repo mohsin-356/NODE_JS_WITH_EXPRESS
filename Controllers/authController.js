@@ -65,7 +65,7 @@ exports.login=asyncErrorHandler(async(req,res,next)=>{
             const token=jwtSignTokenGenerator(user._id);
             res.status(200).json({
                 status:'success',
-                token:token,
+                token:token, 
                 // user,
                 message:'Logged in successfully'
             });
@@ -76,7 +76,6 @@ exports.login=asyncErrorHandler(async(req,res,next)=>{
         return next(error);
     }
 });
-yy
 exports.protect=asyncErrorHandler(async(req,res,next)=>{
     //1.read the token & check  1if it exists
     const testToken=req.headers.authorization;
