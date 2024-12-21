@@ -18,5 +18,5 @@ router.route("/:id")
         .get(authController.protect,moviesController.getMovieWithId)
         .patch(moviesController.updateChunkMovie)
         // .put(moviesController.updateEntireMovie)
-        .delete(moviesController.deleteMovie);
+        .delete(authController.protect,authController.restrict('admin'),moviesController.deleteMovie);
 module.exports = router;

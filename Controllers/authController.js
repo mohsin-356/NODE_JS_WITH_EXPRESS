@@ -106,3 +106,33 @@ exports.protect=asyncErrorHandler(async(req,res,next)=>{
     req.user=user;
     next();
 });
+exports.restrict=(role)=>{
+    return (req,res,next)=>{
+        if(req.user.role!==role)
+        {
+            next(new customError('You do not have permission to access this route',403));
+        }
+        next();
+    }
+}
+exports.forgotPassword=asyncErrorHandler(async(req,res,next)=>{
+    //1 GET THE USER ON THE POSTed EMAIL
+    const user=await User.findOne({email:req.body.email});
+    if(!user)
+    {
+        next(new customError('No user found with this email',404));
+    }
+    //2 GENERATE a random RESET TOKEN 
+    const resetToken=user.createResetPasswordToken();
+
+    await user.save({validateBeforeSave:false});
+    // //2 GENERATE a random RESET TOKEN & SET IT TO THE USER
+    // const resetToken=user.createResetToken();
+    // await user.save({validateBeforeSave:false});
+    // //3 SEND RESET LINK TO THE USER
+    // const resetURL=`http://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+    // const message=`You are receiving this email because you (or someone else) has requested a password reset. Please click on the following link to reset your password: \n\n${resetURL}\n\nIf you did not make this request, please ignore this email and no changes will be made.`;
+});
+exports.resetPassword=asyncErrorHandler(async(req,res,next)=>{
+
+});
