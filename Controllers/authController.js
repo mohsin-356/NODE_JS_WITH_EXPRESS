@@ -1,6 +1,7 @@
 const { token } = require('morgan');
 const User=require('../Models/userModel');
 const asyncErrorHandler = require('../Utils/asyncErrorHandler');
+const sendMail = require('../Utils/email');
 const customError = require('../Utils/customError');
 const jwt=require('jsonwebtoken');
 const util=require('util');
@@ -124,15 +125,29 @@ exports.forgotPassword=asyncErrorHandler(async(req,res,next)=>{
     }
     //2 GENERATE a random RESET TOKEN 
     const resetToken=user.createResetPasswordToken();
-
-    return await user.save({validateBeforeSave:false});
-    // //2 GENERATE a random RESET TOKEN & SET IT TO THE USER
-    // const resetToken=user.createResetToken();
-    // await user.save({validateBeforeSave:false});
+     await user.save({validateBeforeSave:false});
     // //3 SEND RESET LINK TO THE USER
-    // const resetURL=`http://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
-    // const message=`You are receiving this email because you (or someone else) has requested a password reset. Please click on the following link to reset your password: \n\n${resetURL}\n\nIf you did not make this request, please ignore this email and no changes will be made.`;
+    const resetURL=`${req.protocol}://${req.get('host')}/api/v1/users/resetPassword/${resetToken}`;
+    const message=`You are receiving this email because you have requested a password reset. Please click on the following link to reset your password: \n\n${resetURL}\n\n If you did not make this request, please ignore this email and no changes will be made.`;
+    try
+    {
+        await sendMail({
+            email:user.email,
+            subject:'Password Reset',
+            message:message
+        });
+        res.status(200).json({
+            status:'success',
+            message:'Reset password link sent to your email'
+        });
+    }
+    catch (error)
+    {
+        user.passwordResetToken=undefined;
+        user.passwordResetExpires=undefined;
+        user.save({validateBeforeSave:false});
+        return next(new customError('Error sending email, Please try again! later',500));
+    }
 });
 exports.resetPassword=asyncErrorHandler(async(req,res,next)=>{
-
 });

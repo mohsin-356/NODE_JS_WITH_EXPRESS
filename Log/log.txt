@@ -232,3 +232,5 @@
  Execution time for query: 7 milliseconds 
 
  Execution time for query: 33 milliseconds 
+
+ Execution time for query: 24 milliseconds 
