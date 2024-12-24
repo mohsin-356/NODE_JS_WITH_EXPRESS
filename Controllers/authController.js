@@ -5,6 +5,7 @@ const sendMail = require('../Utils/email');
 const customError = require('../Utils/customError');
 const jwt=require('jsonwebtoken');
 const util=require('util');
+const crypto=require('crypto');
 const jwtSignTokenGenerator=(id)=>{
     return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES_IN});
 }
@@ -150,4 +151,28 @@ exports.forgotPassword=asyncErrorHandler(async(req,res,next)=>{
     }
 });
 exports.resetPassword=asyncErrorHandler(async(req,res,next)=>{
+    //1IF THE USER EXISTS WITH THE GIVEN TOKEN & TOKEN HAS NOT EXPIRED
+    let token=crypto.createHash('sha256').update(req.params.token).digest('hex');
+    const user=await User.findOne({passwordResetToken:token,passwordResetTokenExpires:{$gt:Date.now()}});
+    if (!user)
+    {
+        const error=new customError('Invalid or expired token',400);
+        next(error);
+    }
+    //2 RESETTING THE USER's PASSWORD
+    user.password=req.body.password;
+    user.confirmPassword=req.body.confirmPassword;
+    user.passwordResetToken=undefined;
+    user.passwordResetTokenExpires=undefined;
+    user.passwordChangedAt=Date.now();
+    user.save();
+    //3 LOG THE USER IN
+    token=jwtSignTokenGenerator(user._id);
+    res.status(200).json({
+        status:'success',
+        token:token, 
+        // user,
+        message:'Logged in successfully'
+    });
+
 });
