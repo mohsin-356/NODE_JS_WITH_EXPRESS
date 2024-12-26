@@ -6,6 +6,7 @@ const customError = require("../Utils/customError");
 const jwt = require("jsonwebtoken");
 const util = require("util");
 const crypto = require("crypto");
+const jwtSignTokenGenerator =require('../Utils/jwtSignTokenGenerator');
 const authController=require('./authController');
 
 exports.updatePassword = asyncErrorHandler(async (req, res, next) => {
