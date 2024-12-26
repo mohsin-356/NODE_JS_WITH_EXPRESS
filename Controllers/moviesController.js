@@ -1,5 +1,5 @@
-const express = require("express"); //returns a function that creates an Express application
-const app = express();
+// const express = require("express"); //returns a function that creates an Express application
+// const app = express();
 const { stringify } = require("querystring");
 const Movie = require("./../Models/movieModel");
 let ApiFeatures = require("../Utils/ApiFeatures");

@@ -34,8 +34,8 @@ const userSchema = new mongoose.Schema({
             message: 'Passwords do not match'
         }
     },
-    passwordChangedAt:{
-        Date
+    passwordChangedAt: {
+        type: Number
     },
     photo: {
         type: String,
@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
         type:String
     },
     passwordResetTokenExpires:{
-        Date
+        type:Date
     }
 });
 userSchema.pre('save', async function (next) {

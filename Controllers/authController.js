@@ -1,5 +1,5 @@
-const { token } = require("morgan");
 const User = require("../Models/userModel");
+const { token } = require("morgan");
 const asyncErrorHandler = require("../Utils/asyncErrorHandler");
 const sendMail = require("../Utils/email");
 const customError = require("../Utils/customError");
@@ -21,6 +21,7 @@ const createTokenResponse = (user, statusCode, res) => {
     },
   });
 };
+exports.createTokenResponse = createTokenResponse;
 //Send token to client
 // app.post("/api/v1/users/signup",signUp);
 //POST => '/api/v1/users/signup'
@@ -147,14 +148,21 @@ exports.forgotPassword = asyncErrorHandler(async (req, res, next) => {
 
 exports.resetPassword = asyncErrorHandler(async (req, res, next) => {
   //1-IF THE USER EXISTS WITH THE GIVEN TOKEN & TOKEN HAS NOT EXPIRED
+  console.log("\n\n");
+  console.log(`token showing direct from URL REQUEST: `,req.param.token);
+  console.log("\n\n");
   let token = crypto
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
+console.log("Generated token:", token);
   const user = await User.findOne({
     passwordResetToken: token,
     passwordResetTokenExpires: { $gt: Date.now() },
   });
+  console.log("\n\n");
+  console.log(user);
+  console.log("\n\n");
   if (!user) {
     const error = new customError("Invalid or expired token", 400);
     next(error);
@@ -170,18 +178,4 @@ exports.resetPassword = asyncErrorHandler(async (req, res, next) => {
   createTokenResponse(user, 200, res);
 });
 
-exports.updatePassword = asyncErrorHandler(async (req, res, next) => {
-  //1-GET THE CURRENT USER FROM DATABASE
-  const user = await User.findById(req.user._id).select("+password");
-  //2-CHECK IF THE CURRENT SUPPLIED PASSWORD IS CORRECT
-  if (user.matchPassword(req.body.currentPassword, user.password)) {
-    return next(new customError("Current password is incorrect", 401));
-  }
-  //3-IF THE SUPPLIED PASSWORD IS VALID, UPDATE THE USER'S PASSWORD
-  user.password = req.body.password;
-  user.confirmPassword = req.body.confirmPassword;
-  user.passwordChangedAt = Date.now();
-  await user.save();
-  //4-LOG THE USER IN
-  createTokenResponse(user, 200, res);
-});
+
