@@ -8,6 +8,20 @@ const util = require("util");
 const crypto = require("crypto");
 const authController=require('./authController');
 
+const filterRequestObject=(obj,...allowedFields)=>{
+  const newObj={};
+  console.log("\n");
+  console.log(obj);
+  console.log("\n");
+  Object.keys(obj).forEach(prop=>{
+    if(allowedFields.includes(prop))
+    {
+      newObj[prop]=obj[prop];
+    }
+  });
+  return newObj;
+}
+
 exports.updatePassword = asyncErrorHandler(async (req, res, next) => {
     //1-GET THE CURRENT USER FROM DATABASE
     const user = await User.findById(req.user._id).select("+password");
@@ -22,4 +36,16 @@ exports.updatePassword = asyncErrorHandler(async (req, res, next) => {
     await user.save();
     //4-LOG THE USER IN
     authController.createTokenResponse(user, 200, res);
-  });
+});
+
+exports.updateMe=asyncErrorHandler(async (req, res, next) => {
+  //1-CHECK IF THE USER IS TRYING TO UPDATE THE PASSWORD
+  if (req.body.password || req.body.confirmPassword)
+  {
+    return next(new customError("Please use /updateMyPassword to update the password", 400));  
+  }
+  //2-UPDATE THE USER DOCUMENT
+  const filteredObject=filterRequestObject(req.body,'name','email');
+  const updatedUser=await User.findByIdAndUpdate(req.user._id,filteredObject,{new:true,runValidators:true});
+  authController.createTokenResponse(updatedUser, 200, res);
+});
