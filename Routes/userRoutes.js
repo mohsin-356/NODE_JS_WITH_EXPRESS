@@ -14,4 +14,9 @@ router.route("/updateMe")
                 authController.protect,
                 userController.updateMe
             );
+router.route("/deleteMe")
+            .delete(
+                authController.protect,
+                userController.deleteMe
+            );
 module.exports = router;
