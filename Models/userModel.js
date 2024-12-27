@@ -67,7 +67,10 @@ userSchema.pre('save', async function (next) {
     next();
  
 });
-
+userSchema.pre(/^find/,function(next){
+    this.find({active:{$ne:false}});
+    next();
+})
 userSchema.methods.matchPassword=async function(password,passwordDB){
     return await bcrypt.compare(password,passwordDB);
 };
