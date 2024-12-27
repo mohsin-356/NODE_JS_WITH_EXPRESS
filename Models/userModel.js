@@ -51,8 +51,14 @@ const userSchema = new mongoose.Schema({
     },
     passwordResetTokenExpires:{
         type:Date
+    },
+    active:{
+        type:Boolean,
+        default:true,
+        select:false
     }
 });
+
 userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
     //enctype the password before saving it!
