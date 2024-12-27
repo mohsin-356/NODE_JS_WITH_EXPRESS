@@ -49,3 +49,11 @@ exports.updateMe=asyncErrorHandler(async (req, res, next) => {
   const updatedUser=await User.findByIdAndUpdate(req.user._id,filteredObject,{new:true,runValidators:true});
   authController.createTokenResponse(updatedUser, 200, res);
 });
+exports.deleteMe=asyncErrorHandler(async(req,res,next)=>{
+  await User.findByIdAndUpdate(req.user._id,{active:false});
+  res.status(204).json({
+    status:'success',
+    data:null,
+    message:'User deleted successfully'
+  });
+});
