@@ -26,11 +26,13 @@ exports.getAllUsers = asyncErrorHandler(async (req, res, next) => {
     const users = await User.find();
     res.status(200).json({
         status: 'success',
+        length: users.length,
         data: {
             users
         }
     })
 });
+
 exports.updatePassword = asyncErrorHandler(async (req, res, next) => {
     //1-GET THE CURRENT USER FROM DATABASE
     const user = await User.findById(req.user._id).select("+password");
