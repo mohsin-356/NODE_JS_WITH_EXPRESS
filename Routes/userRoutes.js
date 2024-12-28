@@ -4,6 +4,10 @@ const userController=require('../Controllers/userController');
 const express = require('express');
 const router = express.Router();
 
+router.route("/getAllUsers")
+            .get(
+                userController.getAllUsers
+                );
 router.route("/updatePassword")
             .patch(
                 authController.protect,
