@@ -13,6 +13,17 @@ const jwtSignTokenGenerator = (id) => {
 };
 const createTokenResponse = (user, statusCode, res) => {
   const token = jwtSignTokenGenerator(user._id);
+  const options = {
+    maxAge:process.env.JWT_COOKIE_EXPIRES_IN,
+    httpOnly: true,
+  }
+
+  if (process.env.NODE_ENV === "production")
+  {
+    options.secure = true;
+  }
+  res.cookie("jwt", token, options);
+  user.password = undefined;
   res.status(statusCode).json({
     status: "success",
     token,
