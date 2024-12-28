@@ -22,6 +22,15 @@ const filterRequestObject=(obj,...allowedFields)=>{
   return newObj;
 }
 
+exports.getAllUsers = asyncErrorHandler(async (req, res, next) => {
+    const users = await User.find();
+    res.status(200).json({
+        status: 'success',
+        data: {
+            users
+        }
+    })
+});
 exports.updatePassword = asyncErrorHandler(async (req, res, next) => {
     //1-GET THE CURRENT USER FROM DATABASE
     const user = await User.findById(req.user._id).select("+password");
@@ -49,6 +58,7 @@ exports.updateMe=asyncErrorHandler(async (req, res, next) => {
   const updatedUser=await User.findByIdAndUpdate(req.user._id,filteredObject,{new:true,runValidators:true});
   authController.createTokenResponse(updatedUser, 200, res);
 });
+
 exports.deleteMe=asyncErrorHandler(async(req,res,next)=>{
   await User.findByIdAndUpdate(req.user._id,{active:false});
   res.status(204).json({
