@@ -6,6 +6,10 @@ const rateLimit = require("express-rate-limit");//rate limiting middleware to se
 
 const helmet = require("helmet");//security middleware for Express.js to help you secure your applications by setting various HTTP headers
 
+const xss = require("xss-clean");//middleware to prevent XSS attacks
+
+const sanitize = require("express-mongo-sanitize");//middleware to prevent NoSQL injection attacks
+
 const morgan=require('morgan');//HTTP request logger middleware for node.js
 
 const customError=require('./Utils/customError');
@@ -24,8 +28,11 @@ let limiter = rateLimit({
 
 app.use('/api',limiter); // apply to all requests
 
-app.use(morgan('dev'));//[MIDDLEWARE] to log the HTTP requests to the console
-app.use(express.json({limit: '10kb'}));//[MIDDLEWARE] to parse the incoming request body to JSON format 
+app.use(morgan('dev'));//[GLOBAL-MIDDLEWARE] to log the HTTP requests to the console
+app.use(express.json({limit: '10kb'}));//[GLOBAL-MIDDLEWARE] to parse the incoming request body to JSON format 
+
+app.use(sanitize());//[GLOBAL-MIDDLEWARE] to prevent NoSQL injection attacks
+app.use(xss());//[GLOBAL-MIDDLEWARE] to prevent XSS attacks
 
 app.use("/api/v1/movies", moviesRouter);//we are actually mounting this router on the ['/api/v1/MOVIES]'-route
 app.use("/api/v1/auth",authRouter);//we are actually mounting this router on the ['/api/v1/AUTH']-route
