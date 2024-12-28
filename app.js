@@ -4,6 +4,8 @@ const app = express();//calling the function to create an Express application
 
 const rateLimit = require("express-rate-limit");//rate limiting middleware to secure the application from DOS attacks
 
+const helmet = require("helmet");//security middleware for Express.js to help you secure your applications by setting various HTTP headers
+
 const morgan=require('morgan');//HTTP request logger middleware for node.js
 
 const customError=require('./Utils/customError');
@@ -23,7 +25,7 @@ let limiter = rateLimit({
 app.use('/api',limiter); // apply to all requests
 
 app.use(morgan('dev'));//[MIDDLEWARE] to log the HTTP requests to the console
-app.use(express.json());//[MIDDLEWARE] to parse the incoming request body to JSON format 
+app.use(express.json({limit: '10kb'}));//[MIDDLEWARE] to parse the incoming request body to JSON format 
 
 app.use("/api/v1/movies", moviesRouter);//we are actually mounting this router on the ['/api/v1/MOVIES]'-route
 app.use("/api/v1/auth",authRouter);//we are actually mounting this router on the ['/api/v1/AUTH']-route
