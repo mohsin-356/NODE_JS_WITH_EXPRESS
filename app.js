@@ -6,6 +6,8 @@ const globalErrorHandler=require('./Controllers/errorController');
 const moviesRouter=require('./Routes/moviesRoutes');
 const authRouter=require('./Routes/authRoutes');
 const userRouter=require('./Routes/userRoutes');
+
+const rateLimit = require("express-rate-limit");
 app.use(morgan('dev'));
 //CREATE A SERVER
 app.use(express.json());
