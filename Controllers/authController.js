@@ -13,16 +13,15 @@ const jwtSignTokenGenerator = (id) => {
 };
 const createTokenResponse = (user, statusCode, res) => {
   const token = jwtSignTokenGenerator(user._id);
-  const options = {
-    maxAge:process.env.JWT_COOKIE_EXPIRES_IN,
-    httpOnly: true,
-  }
+  // const options = {
+  //   maxAge: process.env.JWT_COOKIE_EXPIRES_IN,
+  //   httpOnly: true,
+  // };
 
-  if (process.env.NODE_ENV === "production")
-  {
-    options.secure = true;
-  }
-  res.cookie("jwt", token, options);
+  // if (process.env.NODE_ENV === "production") {
+  //   options.secure = true;
+  // }
+  // res.cookie("jwt", token, options);
   user.password = undefined;
   res.status(statusCode).json({
     status: "success",
@@ -158,35 +157,43 @@ exports.forgotPassword = asyncErrorHandler(async (req, res, next) => {
 });
 
 exports.resetPassword = asyncErrorHandler(async (req, res, next) => {
-  //1-IF THE USER EXISTS WITH THE GIVEN TOKEN & TOKEN HAS NOT EXPIRED
-  console.log("\n\n");
-  console.log(`token showing direct from URL REQUEST: `,req.param.token);
-  console.log("\n\n");
+  // 1-IF THE USER EXISTS WITH THE GIVEN TOKEN & TOKEN HAS NOT EXPIRED
   let token = crypto
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
-console.log("Generated token:", token);
+
   const user = await User.findOne({
     passwordResetToken: token,
     passwordResetTokenExpires: { $gt: Date.now() },
   });
-  console.log("\n\n");
-  console.log(user);
-  console.log("\n\n");
+
   if (!user) {
     const error = new customError("Invalid or expired token", 400);
-    next(error);
+    return next(error);
   }
-  //2-RESETTING THE USER's PASSWORD
+
+  // 2-RESETTING THE USER's PASSWORD
+  if (!req.body.password || !req.body.confirmPassword) {
+    return res.status(400).json({ message: 'Password and Confirm Password are required.' });
+  }
+
+  if (req.body.password !== req.body.confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match.' });
+  }
+
   user.password = req.body.password;
   user.confirmPassword = req.body.confirmPassword;
   user.passwordResetToken = undefined;
   user.passwordResetTokenExpires = undefined;
   user.passwordChangedAt = Date.now();
-  user.save();
-  //3-LOG THE USER IN
-  createTokenResponse(user, 200, res);
-});
 
+  await user.save();
+
+  // 3-SIMPLE RESPONSE AFTER SUCCESSFUL PASSWORD RESET
+  res.status(200).json({
+    status: 'success',
+    message: 'Your password has been reset successfully. You can now log in with your new password.',
+  });
+});
 
