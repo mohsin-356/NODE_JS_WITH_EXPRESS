@@ -234,3 +234,29 @@
  Execution time for query: 33 milliseconds 
 
  Execution time for query: 24 milliseconds 
+
+ Execution time for query: 49 milliseconds 
+
+ A new movie has been created with the following details: {"name":"Dark Knight Rises","description":"The origin story of the infamous Gotham villain.","duration":122,"ratings":4.8,"totalRating":2500,"releaseYear":2019,"releaseDate":"2019-10-04T00:00:00.000Z","createdAt":"2024-12-03T08:00:00.220Z","genres":["Crime","Drama"],"directors":["Todd Phillips"],"coverImage":"joker.jpg","actors":["Joaquin Phoenix","Robert De Niro","Zazie Beetz"],"price":60,"_id":"677041385615e32be821b559","createdBy":"MOHSIN","__v":0,"durationInHours":2.033333333333333,"id":"677041385615e32be821b559"}
+
+ A new movie has been created with the following details: {"name":"the satanic ritual","description":"ILLUMINATIS","duration":122,"ratings":4.8,"totalRating":2500,"releaseYear":2019,"releaseDate":"2019-10-04T00:00:00.000Z","createdAt":"2024-12-03T08:00:00.220Z","genres":["Crime","Drama"],"directors":["Todd Phillips"],"coverImage":"joker.jpg","actors":["Joaquin Phoenix","Robert De Niro","Zazie Beetz"],"price":60,"_id":"6770e9aee87485b5529a0b1a","createdBy":"MOHSIN","__v":0,"durationInHours":2.033333333333333,"id":"6770e9aee87485b5529a0b1a"}
+
+ A new movie has been created with the following details: {"name":"The Life of pie","description":"survival movie","duration":122,"ratings":4.8,"totalRating":2500,"releaseYear":2019,"releaseDate":"2019-10-04T00:00:00.000Z","createdAt":"2024-12-03T08:00:00.220Z","genres":["Crime","Drama"],"directors":["Todd Phillips"],"coverImage":"joker.jpg","actors":["Joaquin Phoenix","Robert De Niro","Zazie Beetz"],"price":60,"_id":"677120992a3f0e2995291566","createdBy":"MOHSIN","__v":0,"durationInHours":2.033333333333333,"id":"677120992a3f0e2995291566"}
+
+ A new movie has been created with the following details: {"name":"The LIFE","description":"survival movie","duration":100,"ratings":3,"totalRating":2500,"releaseYear":2019,"releaseDate":"2019-10-04T00:00:00.000Z","createdAt":"2024-12-29T10:07:33.197Z","genres":["Crime","Drama"],"directors":["Todd Phillips"],"coverImage":"joker.jpg","actors":["Joaquin Phoenix","Robert De Niro","Zazie Beetz"],"price":60,"_id":"677120dd2a3f0e2995291568","createdBy":"MOHSIN","__v":0,"durationInHours":1.6666666666666667,"id":"677120dd2a3f0e2995291568"}
+
+ Execution time for query: 5 milliseconds 
+
+ Execution time for query: 5 milliseconds 
+
+ Execution time for query: 11 milliseconds 
+
+ Execution time for query: 10 milliseconds 
+
+ Execution time for query: 19 milliseconds 
+
+ Execution time for query: 12 milliseconds 
+
+ Execution time for query: 38 milliseconds 
+
+ Execution time for query: 17 milliseconds 

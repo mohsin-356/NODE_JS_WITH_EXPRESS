@@ -11,12 +11,12 @@ router.route("/movie-by-genre/:genre").get(moviesController.getMovieByGenre);
 // we are categorizing our routes based on HTTP methods which is '/api/v1/movies'
 router.route("/")
         .get(authController.protect,moviesController.getMovie)
-        .post(moviesController.createsNewMovie);
+        .post(authController.protect,moviesController.createsNewMovie);
 
 // we are categorizing our routes based on HTTP methods which is '/api/v1/movies'
 router.route("/:id")
-        .get(authController.protect,moviesController.getMovieWithId)
-        .patch(moviesController.updateChunkMovie)
+        .get(authController.protect,authController.restrict('admin'),moviesController.getMovieWithId)
+        .patch(authController.protect,authController.restrict('admin'),moviesController.updateChunkMovie)//we are using the middleware to protect the route and restrict the route to only admin
         // .put(moviesController.updateEntireMovie)
-        .delete(authController.protect,authController.restrict('admin'),moviesController.deleteMovie);
+        .delete(authController.protect,authController.restrict('admin'),moviesController.deleteMovie);//we are using the middleware to protect the route and restrict the route to only admin
 module.exports = router;
