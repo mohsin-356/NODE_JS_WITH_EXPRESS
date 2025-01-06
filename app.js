@@ -1,23 +1,13 @@
 const express = require("express"); //returns a function that creates an Express application
-
 const app = express();//calling the function to create an Express application
-
 const rateLimit = require("express-rate-limit");//rate limiting middleware to secure the application from DOS attacks
-
 // const helmet = require("helmet");//security middleware for Express.js to help you secure your applications by setting various HTTP headers
-
 const xss = require("xss-clean");//middleware to prevent XSS attacks
-
 const sanitize = require("express-mongo-sanitize");//middleware to prevent NoSQL injection attacks
-
 const httpParametersPollution = require("hpp");//middleware to prevent HTTP Parameter Pollution attacks
-
 const morgan=require('morgan');//HTTP request logger middleware for node.js
-
 const customError=require('./Utils/customError');
-
 const globalErrorHandler=require('./Controllers/errorController');//error handling [MIDDLEWARE(s)]
-
 const moviesRouter=require('./Routes/moviesRoutes');//[ROUTE(s)] for [MOVIE]-operations
 const authRouter=require('./Routes/authRoutes');//[ROUTE(s)] for [AUTHENTICATION]-operations
 const userRouter=require('./Routes/userRoutes');//[ROUTE(s)] for [USER]-operations
